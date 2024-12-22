@@ -148,6 +148,7 @@ import { useRouter } from 'vue-router';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useNotificationStore } from '@/stores/notification';
+import { validateRegister } from '@/utils/validation';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -161,35 +162,11 @@ const form = reactive({
 const errors = ref({});
 const isLoading = ref(false);
 
-const isValid = () => {
-    errors.value = {};
-    
-    if (!form.name || form.name.trim().length < 5) {
-        errors.value.name = ['Name must be at least 5 characters long'];
-    }
-    
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email)) {
-        errors.value.email = ['Please enter a valid email address'];
-    }
-    
-    if (form.password.length < 8) {
-        errors.value.password = ['Password must be at least 8 characters long'];
-    }
-    
-    if (form.password !== form.password_confirmation) {
-        if (errors.value.password) {
-            errors.value.password.push('Passwords do not match');
-        } else {
-            errors.value.password = ['Passwords do not match'];
-        }
-    }
-    
-    return Object.keys(errors.value).length === 0;
-};
-
 const register = async () => {
-    if (!isValid()) {
+    const { isValid, errors: validationErrors } = validateRegister(form);
+
+    if (!isValid) {
+        errors.value = validationErrors;
         return;
     }
 

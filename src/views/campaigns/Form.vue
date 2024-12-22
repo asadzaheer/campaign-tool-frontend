@@ -95,6 +95,7 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import FormInput from "@/components/form/FormInput.vue";
 import FormSelect from "@/components/form/FormSelect.vue";
 import PayoutFields from "@/components/campaigns/PayoutFields.vue";
+import { validateCampaign, sanitizeText, sanitizeUrl } from "@/utils/validation";
 
 const router = useRouter();
 const campaignStore = useCampaignStore();
@@ -139,6 +140,13 @@ const setFormdata = () => {
 
 const submitForm = async () => {
   try {
+    const { isValid, errors: validationErrors } = validateCampaign(form.value);
+
+    if (!isValid) {
+      errors.value = validationErrors;
+      return;
+    }
+
     isLoading.value = true;
     errors.value = {};
     let message = "";
@@ -149,6 +157,9 @@ const submitForm = async () => {
       };
       return;
     }
+
+    form.value.title = sanitizeText(form.value.title);
+    form.value.landing_page_url = sanitizeUrl(form.value.landing_page_url);
 
     if (props.campaign) {
       await campaignStore.updateCampaign(props.campaign.id, form.value);
