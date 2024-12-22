@@ -257,14 +257,11 @@ const loadCampaigns = async () => {
 };
 
 let debounceTimer;
-watch([filters, currentPage], () => {
+watch(filters, () => {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(() => {
-    if (currentPage.value === 1) {
-      loadCampaigns();
-    } else {
-      currentPage.value = 1;
-    }
+    currentPage.value = 1; // Reset to page 1 only when filters change
+    loadCampaigns();
   }, 500);
 }, { deep: true });
 
@@ -304,17 +301,6 @@ const deleteCampaign = async (campaign) => {
   } finally {
     isLoading.value = false;
   }
-};
-
-const filterCampaigns = () => {
-  if (searchTimeout.value) {
-    clearTimeout(searchTimeout.value);
-  }
-
-  searchTimeout.value = setTimeout(() => {
-    currentPage.value = 1;
-    loadCampaigns();
-  }, 1000);
 };
 
 onMounted(() => {
