@@ -93,12 +93,10 @@ const getAvailableCountries = (currentIndex) => {
     .map((payout, index) => (index !== currentIndex ? payout.country : null))
     .filter(Boolean);
   
-  const campaignCountries = props.campaignPayouts?.map((payout) => payout.country) || [];
-  
   return ["estonia", "spain", "bulgaria"].map((country) => ({
     value: country,
     label: country.charAt(0).toUpperCase() + country.slice(1),
-    disabled: selectedCountries.includes(country) && !campaignCountries.includes(country)
+    disabled: selectedCountries.includes(country)
   }));
 };
 
