@@ -137,15 +137,18 @@ const setFormdata = () => {
   }
 };
 
-const hasError = (field) => {
-  return errors.value[field] && errors.value[field].length > 0;
-};
-
 const submitForm = async () => {
   try {
     isLoading.value = true;
     errors.value = {};
     let message = "";
+
+    if (form.value.payouts[0].country === "") {
+      errors.value = {
+        "payouts.0.country": ["The country is required."],
+      };
+      return;
+    }
 
     if (props.campaign) {
       await campaignStore.updateCampaign(props.campaign.id, form.value);

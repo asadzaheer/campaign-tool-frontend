@@ -96,7 +96,7 @@
         appear
         :show="true"
         as="div"
-        class="bg-white shadow overflow-hidden sm:rounded-md relative min-h-[60px]"
+        class="bg-white shadow overflow-unset sm:rounded-md relative min-h-[60px]"
       >
         <LoadingSpinner v-if="isLoading" />
 
