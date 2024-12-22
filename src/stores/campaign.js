@@ -1,16 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import axios from "axios";
+import { campaigns } from "@/utils/api";
 
 export const useCampaignStore = defineStore("campaign", () => {
 
   async function createCampaign(data) {
     try {
-      await axios.post("/api/campaigns", data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await campaigns.create(data);
     } catch (error) {
       throw error;
     }
@@ -18,16 +14,7 @@ export const useCampaignStore = defineStore("campaign", () => {
 
   async function getCampaigns({ page = 1, search = "", status = "" } = {}) {
     try {
-      const response = await axios.get("/api/campaigns", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        params: {
-          page,
-          search,
-          status,
-        },
-      });
+      const response = await campaigns.list({ page, search, status });
       return response.data;
     } catch (error) {
       throw error;
@@ -36,11 +23,7 @@ export const useCampaignStore = defineStore("campaign", () => {
 
   async function updateCampaign(id, data) {
     try {
-      const response = await axios.put(`/api/campaigns/${id}`, data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await campaigns.update(id, data);
       return response.data;
     } catch (error) {
       throw error;
@@ -49,11 +32,7 @@ export const useCampaignStore = defineStore("campaign", () => {
 
   async function getCampaign(id) {
     try {
-      const response = await axios.get(`/api/campaigns/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await campaigns.get(id);
       return response.data;
     } catch (error) {
       throw error;
@@ -62,11 +41,7 @@ export const useCampaignStore = defineStore("campaign", () => {
 
   async function deleteCampaign(id) {
     try {
-      await axios.delete(`/api/campaigns/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await campaigns.delete(id);
     } catch (error) {
       throw error;
     }

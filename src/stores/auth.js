@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import axios from "axios";
+import { auth } from "@/utils/api";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
@@ -19,7 +19,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   async function register(data) {
     try {
-      const response = await axios.post("/api/register", data);
+      const response = await auth.register(data);
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
     } catch (error) {
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   async function login(credentials) {
     try {
-      const response = await axios.post("/api/login", credentials);
+      const response = await auth.login(credentials);
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
     } catch (error) {
@@ -39,12 +39,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   async function logout() {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post("/api/logout", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await auth.logout();
 
       if (response.status !== 200) {
         throw new Error(response?.message || "Logout failed");
@@ -66,11 +61,7 @@ export const useAuthStore = defineStore("auth", () => {
         return;
       }
 
-      const response = await axios.get("/api/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await auth.getUser();
 
       setUser(response.data);
     } catch (error) {
