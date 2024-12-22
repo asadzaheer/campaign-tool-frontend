@@ -26,9 +26,6 @@ import NotificationBanner from "@/components/NotificationBanner.vue";
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
 
-onMounted(async () => {
-  await authStore.getUser();
-});
 </script>
 
 <style scoped>
