@@ -25,6 +25,7 @@ The project is fully dockerized for both development and production environments
 Copy the `.env` file to the root directory:
 ```bash
 cp .env.example .env
+```
 
 Start the development environment using Docker Compose:
 
@@ -38,7 +39,7 @@ This will:
 - Start the development server with hot-reload
 - Mount your local files for real-time development
 
-The development server will be available at `http://localhost:5173`
+The development server will be available at http://localhost:5173/
 
 ## Project Structure
 
