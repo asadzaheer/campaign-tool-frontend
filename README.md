@@ -56,3 +56,10 @@ Development environment includes:
 - `VITE_PORT=5173` - Development server port
 - `VITE_HOST=0.0.0.0` - Development server host
 - `FAST_REFRESH=true` - Enable fast refresh
+
+## Testing
+
+Run all tests:
+```bash
+docker compose exec frontend npm run test
+```
